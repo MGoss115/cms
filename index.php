@@ -1,5 +1,5 @@
 <?php 
-    require 'database.php';
+    require 'includes/database.php';
     
     $sql = "SELECT * 
             FROM article 
@@ -13,7 +13,7 @@
         $articles = mysqli_fetch_all($results, MYSQLI_ASSOC); 
     }
 ?>
-<?php require 'header.php'; ?>
+<?php require 'includes/header.php'; ?>
  <!-- ADD A CHECK BEFORE THE LOOP TO CHECK FOR EMPTY ENTRIES -->
 <?php if (empty($articles)): ?>
     <p>No articles found.</p>
@@ -29,5 +29,5 @@
         <?php endforeach; ?>
     </ul>
 <?php endif; ?>
-<?php require 'footer.php'; ?>
+<?php require 'includes/footer.php'; ?>
    
