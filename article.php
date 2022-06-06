@@ -1,51 +1,32 @@
 <?php 
-    $db_host = "localhost";
-    $db_name = "cms";
-    $db_user = "kaygoss";
-    $db_pass = "WFOIhqv.A@hZdc..";
+    require 'database.php';
+    // VALIDATE ID HAS BEEN SET/DECLARED AND IS NOT NULL AND IS NUMERIC PRIOR TO SEARCH
+    if (isset($_GET['id']) && is_numeric($_GET['id'])){
 
-    $conn = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+        $sql = "SELECT * 
+                FROM article 
+                WHERE id = " . $_GET['id'];
     
-    if(mysqli_connect_error()){
-        echo mysqli_connect_error();
-        exit;
-    }
+        $results = mysqli_query($conn, $sql);
     
-    $sql = "SELECT * 
-            FROM article 
-            WHERE id = " . $_GET['id'];
-
-    $results = mysqli_query($conn, $sql);
-
-    if ($results === false){
-        echo mysqli_error($conn);
+        if ($results === false){
+            echo mysqli_error($conn);
+        }else{
+            $article = mysqli_fetch_assoc($results); 
+        }
     }else{
-        $article = mysqli_fetch_assoc($results); 
+        $article = null;
     }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CMS</title>
-</head>
-<body>
-    <header>
-        <h1>My Blog</h1>
-    </header>
-    <main>
+<?php require 'header.php'; ?>
         <!-- ADD A CHECK BEFORE THE LOOP TO CHECK FOR EMPTY ENTRIES -->
-        <?php if ($article === null): ?>
-            <p>No articles found.</p>
-        <?php else: ?>
-            <article>
-                 <h2><?= $article['title']; ?></h2>
-                 <p><?= $article['content']; ?></p>
-            </article> 
-        <?php endif; ?>
-    </main>
-</body>
-</html>
+<?php if ($article === null): ?>
+    <p>No articles found.</p>
+<?php else: ?>
+    <article>
+        <h2><?= $article['title']; ?></h2>
+        <p><?= $article['content']; ?></p>
+    </article> 
+<?php endif; ?>
+<?php require 'footer.php'; ?>
+
