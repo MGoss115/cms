@@ -30,5 +30,6 @@
         <p><?= htmlspecialchars($article['content']); ?></p>
     </article> 
 <?php endif; ?>
+<a href="index.php">Home</a>
 <?php require 'includes/footer.php'; ?>
 

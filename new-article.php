@@ -1,12 +1,13 @@
 <!-- TO CHECK THE TYPE OF REQUEST YOU CAN USE $_SERVER["REQUEST_METHOD"] -->
 
 <?php 
-    require 'includes/database.php';
-    
-    $errors = [];
-    $title = '';
-    $content = '';
-    $published_at = '';
+
+require 'includes/database.php';
+
+$errors = [];
+$title = '';
+$content = '';
+$published_at = '';
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
 
@@ -35,35 +36,47 @@
                 }
             }
         }
-       
-        if(empty($errors)){
+        if (empty($errors)) {
 
-        $conn = getDB();
+            $conn = getDB();
 
-        $sql = "INSERT INTO article (title, content, published_at)
-                VALUES(?, ?, ?)";
+            $sql = "INSERT INTO article (title, content, published_at) VALUES (?, ?, ?)";
 
-        // RETURNS SQL STATEMENT AND IF THERE IS AN ERROR IN THE SQL QUERY THEN IT WILL BE RETURN WITH THE IF STATEMENT
-        $stmt = mysqli_prepare($conn, $sql);
+            $stmt = mysqli_prepare($conn, $sql);
 
-        if($stmt === false){    //HERE IS THE CEHCK 
-            echo mysqli_error($conn);
-        }else{
+            if ($stmt === false) {
 
-            if($published_at == ''){
-                $published_at = null;
-            }
+                echo mysqli_error($conn);
 
-            mysqli_stmt_bind_param($stmt, "sss", $title, $content, $published_at);
-            if(mysqli_stmt_execute($stmt)){
-                $id = mysqli_insert_id($conn);
-                echo "Inserted record with ID: $id";    
-            }else{
-                echo mysqli_stmt_error($stmt);
+            } else {
+
+                if ($published_at == '') {
+                    $published_at = null;
+                }
+
+                mysqli_stmt_bind_param($stmt, "sss", $title, $content, $published_at);
+
+                if (mysqli_stmt_execute($stmt)) {
+
+                    $id = mysqli_insert_id($conn);
+
+                    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
+                        $protocol = 'https';
+                    } else {
+                        $protocol = 'http';
+                    }
+
+                    header("Location: $protocol://" . $_SERVER['HTTP_HOST'] . "/cms/article.php?id=$id");
+                    exit;
+
+                } else {
+
+                    echo mysqli_stmt_error($stmt);
+
+                }
             }
         }
     }
-}
 ?>
 
 <?php require 'includes/header.php'; ?>
