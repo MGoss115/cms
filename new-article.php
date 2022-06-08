@@ -36,7 +36,7 @@
         if($stmt === false){    //HERE IS THE CEHCK 
             echo mysqli_error($conn);
         }else{
-            mysqli_stmt_bind_param($stmt, "sss", $title. $content, $published_at);
+            mysqli_stmt_bind_param($stmt, "sss", $title, $content, $published_at);
             if(mysqli_stmt_execute($stmt)){
                 $id = mysqli_insert_id($conn);
                 echo "Inserted record with ID: $id";    
