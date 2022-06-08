@@ -1,5 +1,7 @@
 <?php 
     require 'includes/database.php';
+
+    $conn = getDB();
     // VALIDATE ID HAS BEEN SET/DECLARED AND IS NOT NULL AND IS NUMERIC PRIOR TO SEARCH
     if (isset($_GET['id']) && is_numeric($_GET['id'])){
 

@@ -1,8 +1,11 @@
 <!-- TO CHECK THE TYPE OF REQUEST YOU CAN USE $_SERVER["REQUEST_METHOD"] -->
 
 <?php 
+    require 'includes/database.php';
+
+    $conn = getDB();
+
     if($_SERVER["REQUEST_METHOD"] == "POST"){
-        require 'includes/database.php';
 
         $sql = "INSERT INTO article (title, content, published_at)
                 VALUES(?, ?, ?)";
