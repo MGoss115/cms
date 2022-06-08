@@ -2,10 +2,22 @@
 
 <?php 
     require 'includes/database.php';
-
-    $conn = getDB();
+    
+    $errors = [];
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
+        // CHECK TO SEE IF REQUIRED FIELDS ARE EMPTY
+        
+        if($_POST['title'] == ''){
+            $errors[] = 'Title is required';
+        }
+        if($_POST['content'] == ''){
+            $errors[] = 'Content is required';
+        }
+        
+        if(empty($errors)){
+
+        $conn = getDB();
 
         $sql = "INSERT INTO article (title, content, published_at)
                 VALUES(?, ?, ?)";
@@ -25,10 +37,20 @@
             }
         }
     }
+}
 ?>
 
 <?php require 'includes/header.php'; ?>
 <h1>New Article</h1>
+
+<?php if(!empty($errors)): ?>
+    <ul>
+        <?php foreach($errors as $error): ?>
+            <li><?= $error ?></li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
+
 <form method="post">
     <div>
         <label for="title">Title</label>
