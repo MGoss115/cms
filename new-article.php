@@ -6,6 +6,8 @@ require 'includes/database.php';
 
 require 'includes/article.php';
 
+require 'includes/url.php';
+
 $title = '';
 $content = '';
 $published_at = '';
@@ -44,14 +46,7 @@ $published_at = '';
 
                     $id = mysqli_insert_id($conn);
 
-                    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
-                        $protocol = 'https';
-                    } else {
-                        $protocol = 'http';
-                    }
-
-                    header("Location: $protocol://" . $_SERVER['HTTP_HOST'] . "/cms/article.php?id=$id");
-                    exit;
+                    redirect("/cms/article.php?id=$id");
 
                 } else {
 
