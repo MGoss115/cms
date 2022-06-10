@@ -1,21 +1,11 @@
 <?php 
     require 'includes/database.php';
+    require 'includes/article.php';
 
     $conn = getDB();
-    // VALIDATE ID HAS BEEN SET/DECLARED AND IS NOT NULL AND IS NUMERIC PRIOR TO SEARCH
-    if (isset($_GET['id']) && is_numeric($_GET['id'])){
-
-        $sql = "SELECT * 
-                FROM article 
-                WHERE id = " . $_GET['id'];
-    
-        $results = mysqli_query($conn, $sql);
-    
-        if ($results === false){
-            echo mysqli_error($conn);
-        }else{
-            $article = mysqli_fetch_assoc($results); 
-        }
+    // VALIDATE ID HAS BEEN SET/DECLARED AND IS NOT NULL
+    if (isset($_GET['id'])){
+        $article = getArticle($conn, $_GET['id']);
     }else{
         $article = null;
     }
