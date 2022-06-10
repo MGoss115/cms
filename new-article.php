@@ -4,7 +4,8 @@
 
 require 'includes/database.php';
 
-$errors = [];
+require 'includes/article.php';
+
 $title = '';
 $content = '';
 $published_at = '';
