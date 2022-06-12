@@ -8,10 +8,10 @@
  *
  * @return mixed An associative array containing the article with that ID, or null if not found
  */
-function getArticle($conn, $id)
+function getArticle($conn, $id, $columns = '*')
 {
     // QUERY STATEMENT TO OBTAIN ID
-    $sql = "SELECT *
+    $sql = "SELECT $columns
             FROM article
             WHERE id = ?";
      // CODE TO PREPARE QUERY STATEMENT
