@@ -20,9 +20,7 @@
         <p><?= htmlspecialchars($article['content']); ?></p>
     </article> 
     <a href="edit-article.php?id=<?= $article['id']; ?>">Edit</a>
-    <form method="post" action="delete-article.php?id=<?= $article['id']; ?>">
-        <button>Delete</button>
-    </form>
+    <a href="delete-article.php?id=<?= $article['id']; ?>">Delete</a>
 <?php endif; ?>
 <a href="index.php">Home</a>
 <?php require 'includes/footer.php'; ?>

@@ -41,3 +41,15 @@
     }
 }
 ?>
+<?php require 'includes/header.php'; ?>
+
+<h2>Delete Article</h2>
+
+    <form method="post">
+        <p>Are you sure?</p>
+
+        <button>Delete</button>
+        <a href="article.php?id=<?= $article['id']; ?>">Cancel</a>
+    </form>
+
+<?php require 'includes/footer.php'; ?>
