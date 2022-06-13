@@ -8,9 +8,19 @@ require 'includes/article.php';
 
 require 'includes/url.php';
 
-$title = '';
-$content = '';
-$published_at = '';
+require 'includes/auth.php';
+
+    session_start();
+
+    if ( ! isLoggedIn()) {
+
+        die("unauthorized");
+
+    }
+
+    $title = '';
+    $content = '';
+    $published_at = '';
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
 

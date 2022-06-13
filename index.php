@@ -1,21 +1,33 @@
 <?php 
-    require 'includes/database.php';
+    require 'classes/Database.php';
 
-    $conn = getDB();
+    require 'includes/auth.php';
+
+    session_start();
+
+   $db = new Database();
+   $conn = $db->getConn();
     
     $sql = "SELECT * 
             FROM article 
             ORDER BY published_at";
 
-    $results = mysqli_query($conn, $sql);
+    $results = $conn->query($sql);
 
-    if ($results === false){
-        echo mysqli_error($conn);
-    }else{
-        $articles = mysqli_fetch_all($results, MYSQLI_ASSOC); 
-    }
+    $articles = $results->fetchAll(PDO::FETCH_ASSOC);
+    
 ?>
 <?php require 'includes/header.php'; ?>
+
+
+<?php if (isLoggedIn()): ?>
+    <p>You are logged in. <a href="logout.php">Logout</a></p>
+    <p><a href="new-article.php">Add New Article</a></p>
+    <?php else: ?>
+        <p>You are not logged in. <a href="login.php">Login</a></p>
+        <?php endif; ?>
+        
+
  <!-- ADD A CHECK BEFORE THE LOOP TO CHECK FOR EMPTY ENTRIES -->
 <?php if (empty($articles)): ?>
     <p>No articles found.</p>

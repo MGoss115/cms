@@ -9,6 +9,5 @@
 <body>
     <header>
         <h1>My Blog</h1>
-        <a href="new-article.php">Add New Blog</a>
     </header>
     <main>
