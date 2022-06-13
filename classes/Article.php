@@ -14,8 +14,8 @@ class Article {
      *
      * @return array An associative array of all the article records
      */
-        public static function getAll($conn)
-    {
+        public static function getAll($conn){
+
         $sql = "SELECT *
                 FROM article
                 ORDER BY published_at;";
@@ -34,8 +34,8 @@ class Article {
      *
      * @return mixed An object of this class, or null if not found
      */
-    public static function getByID($conn, $id, $columns = '*')
-    {
+    public static function getByID($conn, $id, $columns = '*'){
+
         $sql = "SELECT $columns
                 FROM article
                 WHERE id = :id";
@@ -59,8 +59,8 @@ class Article {
      *
      * @return boolean True if the update was successful, false otherwise
      */
-    public function update($conn)
-    {
+    public function update($conn){
+
         if($this->validate()){
 
             $sql = "UPDATE article
@@ -140,5 +140,39 @@ class Article {
         $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
            
         return $stmt->execute();
+    }
+
+      /**
+     * Insert a new article with its current property values
+     *
+     * @param object $conn Connection to the database
+     *
+     * @return boolean True if the insert was successful, false otherwise
+     */
+     public function create($conn){
+
+        if($this->validate()){
+
+            $sql = "INSERT INTO article (title, content, published_at)
+                    VALUES (:title, :content, :published_at)";
+
+            $stmt = $conn->prepare($sql);
+
+            $stmt->bindValue(':title', $this->title, PDO::PARAM_STR);
+            $stmt->bindValue(':content', $this->content, PDO::PARAM_STR);
+
+            if ($this->published_at == '') {
+                $stmt->bindValue(':published_at', null, PDO::PARAM_NULL);
+            } else {
+                $stmt->bindValue(':published_at', $this->published_at, PDO::PARAM_STR);
+            }
+
+            if ($stmt->execute()){
+                $this->id = $conn->lastInsertId();
+                return true;
+            }
+        } else {
+            return false;
+        }
     }
 }

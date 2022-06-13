@@ -1,20 +1,22 @@
-<?php 
-    require 'classes/Database.php';
-    require 'classes/Article.php';
+<?php
 
-    $db = new Database();
-    $conn = $db->getConn();
-    
-    // VALIDATE ID HAS BEEN SET/DECLARED AND IS NOT NULL
-    if (isset($_GET['id'])){
-        $article = Article::getByID($conn, $_GET['id']);
-    }else{
-        $article = null;
-    }
+require 'classes/Database.php';
+require 'classes/Article.php';
+
+$db = new Database();
+$conn = $db->getConn();
+
+if (isset($_GET['id'])) {
+    $article = Article::getByID($conn, $_GET['id']);
+} else {
+    $article = null;
+}
+
 ?>
 <?php require 'includes/header.php'; ?>
-        <!-- ADD A CHECK BEFORE THE LOOP TO CHECK FOR EMPTY ENTRIES -->
+
 <?php if ($article) : ?>
+
     <article>
         <h2><?= htmlspecialchars($article->title); ?></h2>
         <p><?= htmlspecialchars($article->content); ?></p>
@@ -26,6 +28,7 @@
 <?php else : ?>
     <p>Article not found.</p>
 <?php endif; ?>
+
 <a href="index.php">Home</a>
 <?php require 'includes/footer.php'; ?>
 
