@@ -3,7 +3,7 @@
 
     require 'classes/Article.php';
 
-    require 'includes/auth.php';
+    require 'classes/Auth.php';
 
     session_start();
 
@@ -15,7 +15,7 @@
 <?php require 'includes/header.php'; ?>
 
 
-<?php if (isLoggedIn()): ?>
+<?php if (Auth::isLoggedIn()): ?>
     <p>You are logged in. <a href="logout.php">Logout</a></p>
     <p><a href="new-article.php">Add New Article</a></p>
     <?php else: ?>
