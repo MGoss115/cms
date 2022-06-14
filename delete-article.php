@@ -1,7 +1,7 @@
 <?php 
     require 'classes/Database.php';
     require 'classes/Article.php';
-    require 'includes/url.php';
+    require 'classes/Url.php';
 
     $db = new Database();
     $conn = $db->getConn();
@@ -22,7 +22,7 @@
 
         if($article->delete($conn)){
 
-            redirect("/cms/index.php");
+            Url::redirect("/cms/index.php");
         }    
     }
 ?>

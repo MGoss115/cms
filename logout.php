@@ -1,6 +1,6 @@
 <?php
 
-    require 'includes/url.php';
+    require 'classes/Url.php';
 
     session_start();
 
@@ -19,5 +19,5 @@
 
     session_destroy();
 
-    redirect('/cms');
+    Url::redirect('/cms');
 ?>

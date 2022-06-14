@@ -6,7 +6,7 @@ require 'classes/Database.php';
 
 require 'classes/Article.php';
 
-require 'includes/url.php';
+require 'classes/Url.php';
 
 require 'classes/Auth.php';
 
@@ -30,7 +30,7 @@ require 'classes/Auth.php';
         $article->published_at = $_POST['published_at'];
 
         if ($article->create($conn)) {
-            redirect("/cms/article.php?id={$article->id}");
+            Url::redirect("/cms/article.php?id={$article->id}");
         }
     }
 ?>
