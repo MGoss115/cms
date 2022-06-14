@@ -1,15 +1,9 @@
 <?php 
-    require 'classes/Database.php';
+    require 'includes/init.php';
 
-    require 'classes/Article.php';
+    $conn = require 'includes/db.php';
 
-    require 'classes/Auth.php';
-
-    session_start();
-
-   $db = new Database();
-   $conn = $db->getConn();
-   $articles = Article::getAll($conn);
+    $articles = Article::getAll($conn);
     
 ?>
 <?php require 'includes/header.php'; ?>
@@ -19,7 +13,7 @@
     <p>You are logged in. <a href="logout.php">Logout</a></p>
     <p><a href="new-article.php">Add New Article</a></p>
     <?php else: ?>
-        <p>You are not logged in. <a href="login.php">Login</a></p>
+        <p>You are not logged in. <a href="login.php">Log in</a></p>
         <?php endif; ?>
         
 

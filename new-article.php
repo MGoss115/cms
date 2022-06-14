@@ -2,15 +2,7 @@
 
 <?php 
 
-require 'classes/Database.php';
-
-require 'classes/Article.php';
-
-require 'classes/Url.php';
-
-require 'classes/Auth.php';
-
-    session_start();
+require 'includes/init.php';
 
     if ( ! Auth::isLoggedIn()) {
 
@@ -22,8 +14,7 @@ require 'classes/Auth.php';
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-        $db = new Database();
-        $conn = $db->getConn();
+        $conn = require 'includes/db.php';
         
         $article->title = $_POST['title'];
         $article->content = $_POST['content'];
