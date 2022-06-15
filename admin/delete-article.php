@@ -1,7 +1,9 @@
 <?php 
-    require 'includes/init.php';
+    require '../includes/init.php';
 
-    $conn = require 'includes/db.php';
+    Auth::requireLogin();
+
+    $conn = require '../includes/db.php';
 
     if (isset($_GET['id'])) {
 
@@ -19,11 +21,11 @@
 
         if($article->delete($conn)){
 
-            Url::redirect("/cms/index.php");
+            Url::redirect("/cms/admin/index.php");
         }    
     }
 ?>
-<?php require 'includes/header.php'; ?>
+<?php require '../includes/header.php'; ?>
 
 <h2>Delete Article</h2>
 
@@ -34,4 +36,4 @@
         <a href="article.php?id=<?= $article->id; ?>">Cancel</a>
     </form>
 
-<?php require 'includes/footer.php'; ?>
+<?php require '../includes/footer.php'; ?>

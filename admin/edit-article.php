@@ -1,7 +1,9 @@
 <?php 
-require 'includes/init.php';
+require '../includes/init.php';
 
-$conn = require 'includes/db.php';
+Auth::requireLogin();
+
+$conn = require '../includes/db.php';
 
 if (isset($_GET['id'])) {
 
@@ -22,16 +24,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $article->published_at = $_POST['published_at'];
 
     if ($article->update($conn)) {
-        Url::redirect("/cms/article.php?id={$article->id}");
+        Url::redirect("/cms/admin/article.php?id={$article->id}");
     }
 }
 ?>
-<?php require 'includes/header.php'; ?>
+<?php require '../includes/header.php'; ?>
 
 <h1>Edit Article</h1>
 
-<a href="index.php">Home</a>
-
 <?php require 'includes/article-form.php'; ?>
 
-<?php require 'includes/footer.php'; ?>
+<?php require '../includes/footer.php'; ?>

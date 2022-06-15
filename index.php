@@ -9,14 +9,6 @@
 <?php require 'includes/header.php'; ?>
 
 
-<?php if (Auth::isLoggedIn()): ?>
-    <p>You are logged in. <a href="logout.php">Logout</a></p>
-    <p><a href="new-article.php">Add New Article</a></p>
-    <?php else: ?>
-        <p>You are not logged in. <a href="login.php">Log in</a></p>
-        <?php endif; ?>
-        
-
  <!-- ADD A CHECK BEFORE THE LOOP TO CHECK FOR EMPTY ENTRIES -->
 <?php if (empty($articles)): ?>
     <p>No articles found.</p>
