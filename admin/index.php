@@ -5,7 +5,10 @@
 
     $conn = require '../includes/db.php';
 
-    $articles = Article::getAll($conn);
+    //coalescing operator 
+    $paginator = new Paginator($_GET['page'] ?? 1, 3, Article::getTotal($conn));
+
+    $articles = Article::getPage($conn, $paginator->limit, $paginator->offset);
     
 ?>
 <?php require '../includes/header.php'; ?>
@@ -34,6 +37,7 @@
         <?php endforeach; ?>
         </tbody>
     </table>
+    <?php require '../includes/pagination.php'; ?>  
 <?php endif; ?>
 <?php require '../includes/footer.php'; ?>
 
