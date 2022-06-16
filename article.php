@@ -15,8 +15,13 @@ if (isset($_GET['id'])) {
 
 <?php if ($article) : ?>
 
-    <article>
+     <article>
         <h2><?= htmlspecialchars($article->title); ?></h2>
+
+        <?php if ($article->image_file) : ?>
+            <img src="/cms/uploads/<?= $article->image_file; ?>">
+        <?php endif; ?>
+
         <p><?= htmlspecialchars($article->content); ?></p>
     </article>
 
