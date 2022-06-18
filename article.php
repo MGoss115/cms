@@ -17,6 +17,10 @@ if (isset($_GET['id'])) {
 
    <article>
         <h2><?= htmlspecialchars($article[0]['title']); ?></h2>
+        <time datetime="<?= $article[0]['published_at'] ?>"><?php 
+            $datetime = new DateTime($article['published_at']);
+             echo $datetime->format("F j, Y");
+        ?></time>
         <!-- checks to see if we have any categories to display & if we do the below code loops through the array and prints them out -->
         <?php if ($article[0]['category_name']) : ?>
             <p>Categories:

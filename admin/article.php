@@ -19,6 +19,11 @@ if (isset($_GET['id'])) {
 
     <article>
         <h2><?= htmlspecialchars($article[0]['title']); ?></h2>
+          <?php if ($article[0]['published_at']) : ?>
+                        <time><?= $article[0]['published_at'] ?></time>
+                    <?php else: ?>
+                        Unpublished
+                    <?php endif; ?>
         <!-- checks to see if we have any categories to display & if we do the below code loops through the array and prints them out -->
         <?php if ($article[0]['category_name']) : ?>
             <p>Categories:

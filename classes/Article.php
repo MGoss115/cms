@@ -26,47 +26,51 @@ class Article {
         return $results->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getPage($conn, $limit, $offset){
-       $sql = "SELECT a.*, category.name AS category_name
-                FROM (SELECT *
-                FROM article
-                ORDER BY published_at
-                LIMIT :limit
-                OFFSET :offset) AS a
-                LEFT JOIN article_category
-                ON a.id = article_category.article_id
-                LEFT JOIN category
-                ON article_category.category_id = category.id";
-                
-        $stmt = $conn->prepare($sql);
+    public static function getPage($conn, $limit, $offset, $only_published = false){
 
-        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $condition = $only_published ? ' WHERE published_at IS NOT NULL': '';
 
-        $stmt->execute();
+        $sql = "SELECT a.*, category.name AS category_name
+                    FROM (SELECT *
+                    FROM article
+                    $condition
+                    ORDER BY published_at
+                    LIMIT :limit
+                    OFFSET :offset) AS a
+                    LEFT JOIN article_category
+                    ON a.id = article_category.article_id
+                    LEFT JOIN category
+                    ON article_category.category_id = category.id";
+                    
+            $stmt = $conn->prepare($sql);
 
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 
-        $articles = [];
+            $stmt->execute();
 
-        $previous_id = null;
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        foreach ($results as $row) {
+            $articles = [];
 
-            $article_id = $row['id'];
+            $previous_id = null;
 
-            if ($article_id != $previous_id) {
-                $row['category_names'] = [];
+            foreach ($results as $row) {
 
-                $articles[$article_id] = $row;
+                $article_id = $row['id'];
+
+                if ($article_id != $previous_id) {
+                    $row['category_names'] = [];
+
+                    $articles[$article_id] = $row;
+                }
+
+                $articles[$article_id]['category_names'][] = $row['category_name'];
+
+                $previous_id = $article_id;
             }
 
-            $articles[$article_id]['category_names'][] = $row['category_name'];
-
-            $previous_id = $article_id;
-        }
-
-        return $articles;
+            return $articles;
     }
 
 
@@ -334,9 +338,11 @@ class Article {
      *
      * @return integer The total number of records
      */    
-    public static function getTotal($conn){
+    public static function getTotal($conn, $only_published = false){
 
-        return $conn->query('SELECT COUNT(*) FROM article')->fetchColumn();
+        $condition = $only_published ? ' WHERE published_at IS NOT NULL': '';
+
+        return $conn->query("SELECT COUNT(*) FROM article$condition")->fetchColumn();
     }
 
        /**
@@ -359,6 +365,31 @@ class Article {
         $stmt->bindValue(':image_file', $filename, $filename== null ? PDO::PARAM_NULL : PDO::PARAM_STR);
 
         return $stmt->execute();
+    }
+
+     /**
+     * Publish the article, setting the published_at field to the current date and time
+     *
+     * @param object $conn Connection to the database
+     *
+     * @return mixed The published at date and time if successful, null otherwise
+     */
+    public function publish($conn){
+        
+        $sql = "UPDATE article
+                SET published_at = :published_at
+                WHERE id = :id";
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+        $published_at = date("Y-m-d H:i:s");
+        $stmt->bindValue(':published_at', $published_at, PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return $published_at;
+        }
     }
   
 }

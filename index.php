@@ -4,9 +4,9 @@
     $conn = require 'includes/db.php';
 
     //coalescing operator 
-    $paginator = new Paginator($_GET['page'] ?? 1, 3, Article::getTotal($conn));
+    $paginator = new Paginator($_GET['page'] ?? 1, 3, Article::getTotal($conn, true));
 
-    $articles = Article::getPage($conn, $paginator->limit, $paginator->offset);
+    $articles = Article::getPage($conn, $paginator->limit, $paginator->offset, true);
     
 ?>
 <?php require 'includes/header.php'; ?>
@@ -21,6 +21,10 @@
             <li>
                 <article>
                     <h2><a href="article.php?id=<?= $article['id']; ?>"><?= htmlspecialchars($article['title']); ?></a></h2>
+                    <time datetime="<?= $article['published_at'] ?>"><?php 
+                        $datetime = new DateTime($article['published_at']);
+                        echo $datetime->format("F j, Y");
+                    ?></time>
                         <?php if ($article['category_names']) : ?>
                         <p>Categories:
                             <?php foreach ($article['category_names'] as $name) : ?>
